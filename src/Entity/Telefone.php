@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Alura\Doctrine\Entity\Aluno;
 
+
 /**
  *  @Entity 
  */
@@ -25,7 +26,7 @@ class Telefone
     private string $numero;
 
     /**
-     * @MannyToOne(targetEntity="Aluno")
+     * @ManyToOne(targetEntity="Aluno")
      */
     private Aluno $aluno;
 
@@ -40,9 +41,25 @@ class Telefone
         return $this -> id;
     }
 
-    public function setNumero(string $numero): void
+    public function setNumero(string $numero): self
     {
         $this -> numero = $numero;
+        return $this;
+    }
+
+    public function getNumero(): string
+    {
+        return $this -> numero;
     }
     
+    public function setAluno(Aluno $aluno): self
+    { 
+        $this -> aluno = $aluno;
+        return $this;
+    }
+
+    public function getAluno(): Aluno
+    {
+        return $this -> aluno;
+    }
 }

@@ -4,7 +4,6 @@ namespace Alura\Doctrine\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\DBAL\Schema\Index;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -28,14 +27,12 @@ class Aluno
      */
     private string $nome;
     /**
-     * @OneToMany(targetEntity="Telefone", mappedBy="aluno")
+     * @OneToMany(targetEntity="Telefone", mappedBy="Aluno", cascade=("remove", "persist"))
      */
     private $telefones;
 
-    public function __construct(int $id, string $nome)
+    public function __construct()
     {
-        $this -> setId($id);
-        $this -> setNome($nome);
         $this -> telefones = new ArrayCollection();
     }
 
@@ -62,6 +59,7 @@ class Aluno
     public function addTelefone(Telefone $telefone): self
     {
         $this -> telefones -> add($telefone);
+        $telefone -> setAluno($this);
         return $this;
     }
 

@@ -1,26 +1,27 @@
 <?php
 
 use Alura\Doctrine\Entity\Aluno;
+use Alura\Doctrine\Entity\Telefone;
 use Alura\Doctrine\Helper\EntityManagerFactory;
 
 require_once 'vendor/autoload.php';
 
-
-
-
-$aluno = new Aluno(0, "...");
-
+$aluno = new Aluno();
+$aluno->setNome($argv[1]);
 
 $entityManagerFactory = new EntityManagerFactory();
-$entityManager = $entityManagerFactory -> getEntityManager();
+$entityManager = $entityManagerFactory->getEntityManager();
 
-// Mantém a variável/entidade em observação para persistência;
-$entityManager -> persist($aluno);
+for ($i = 2; $i < $argc; $i++) {
+    $numeroTelefone = $argv[$i];
+    $telefone = new Telefone();
+    $telefone->setNumero($numeroTelefone);
+    $aluno->addTelefone($telefone);
 
-$aluno -> setNome("Vitor");
-$aluno -> setNome("C. Vitor");
-$aluno -> setNome("C. Mesquita");
+}
 
 
-$entityManager -> flush();
 
+$entityManager->persist($aluno);
+
+$entityManager->flush();
