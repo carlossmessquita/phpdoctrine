@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\OneToMany;
+use Doctrine\ORM\Mapping\ManyToMany;
 
 /**
  * 
@@ -31,9 +32,15 @@ class Aluno
      */
     private $telefones;
 
+    /**
+     * ManyToMany(targetEntity="Curso", mappedBy="Alunos")
+     */
+    private $cursos;
+
     public function __construct()
     {
         $this -> telefones = new ArrayCollection();
+        $this -> cursos = new ArrayCollection();
     }
 
     public function getId(): int 
@@ -66,5 +73,20 @@ class Aluno
     public function getTelefones(): Collection
     {
         return $this -> telefones;
+    }
+
+    public function addCurso(Curso $curso) 
+    {
+        if ($this -> cursos -> contains($curso)) {
+            return $this;
+        }
+        $this -> cursos -> add($curso);
+        $curso -> addAluno($this);
+        return $this;
+     }
+
+    public function getCursos(): Collection
+    {
+        return $this->cursos;
     }
 }
